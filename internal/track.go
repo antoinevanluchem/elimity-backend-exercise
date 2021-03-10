@@ -12,6 +12,7 @@ import (
 //
 // The given interval must be greater than zero.
 func Track(interval time.Duration) error {
+	fmt.Printf("Dit is Track")
 	for ; ; <-time.Tick(interval) {
 		client := github.NewClient(nil)
 		con := context.Background()
@@ -23,6 +24,7 @@ func Track(interval time.Duration) error {
 		}
 		for _, repository := range result.Repositories {
 			fmt.Println(*repository.Name)
+			fmt.Println("Dit is for loop in Track")
 		}
 	}
 }

@@ -21,6 +21,7 @@ func log(message string) {
 }
 
 func main() {
+	fmt.Printf("Dit is main")
 	if err := run(); err != nil {
 		message := err.Error()
 		log(message)
