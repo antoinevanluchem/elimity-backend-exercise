@@ -1,4 +1,4 @@
-module github.com/elimity-com/backend-intern-exercise
+module github.com/antoinevanluchem/elimity-backend-exercise
 
 go 1.16
 

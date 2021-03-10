@@ -9,7 +9,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/elimity-com/backend-intern-exercise/internal"
+	"github.com/antoinevanluchem/elimity-backend-exercise/internal"
+	// "github.com/elimity-com/backend-intern-exercise/internal"
 )
 
 var args = os.Args
