@@ -48,13 +48,13 @@ func parseInterval() (time.Duration, int, error) {
 	var minStars int
 	set.IntVar(&minStars, "min_stars", 0, "Filter out repositories with a star count below the given value")
 
+	fmt.Println("minStars is:", minStars)
+
 	var tF string
 	set.StringVar(&tF, "token_file", "", "GitHub personal access token will be read from the given file path")
 	if tF != "" {
 		tokenFile = tF
 	}
-
-	fmt.Printf("minStars %d\n", minStars)
 
 	set.SetOutput(ioutil.Discard)
 	args := args[2:]
