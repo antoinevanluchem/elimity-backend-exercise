@@ -46,6 +46,8 @@ func parseInterval() (time.Duration, int, error) {
 	var minStars int
 	minStars = *set.Int("min_stars", 0, "Filter out repositories with a star count below the given value")
 
+	fmt.Printf("minStars %d", minStars)
+
 	set.SetOutput(ioutil.Discard)
 	args := args[2:]
 
