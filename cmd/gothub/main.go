@@ -40,15 +40,13 @@ func makeName() string {
 	return filepath.Base(path)
 }
 
-func parseInterval() (time.Duration, int, error) {
+func parseInterval() (*internal.TrackOptions, error) {
 	set := flag.NewFlagSet("", flag.ExitOnError)
 	var interval time.Duration
 	set.DurationVar(&interval, "interval", 10*time.Second, "")
 
 	var minStars int
 	set.IntVar(&minStars, "min_stars", 0, "Filter out repositories with a star count below the given value")
-
-	fmt.Println("minStars is:", minStars)
 
 	var tF string
 	set.StringVar(&tF, "token_file", "", "GitHub personal access token will be read from the given file path")
@@ -60,18 +58,18 @@ func parseInterval() (time.Duration, int, error) {
 	args := args[2:]
 
 	if err := set.Parse(args); err != nil {
-		return 0, 0, errors.New("got invalid flags")
+		return &internal.TrackOptions{}, errors.New("got invalid flags")
 	}
 
 	if interval <= 0 {
-		return 0, 0, errors.New("got invalid interval")
+		return &internal.TrackOptions{}, errors.New("got invalid interval")
 	}
 
 	if minStars < 0 {
-		return 0, 0, errors.New("got invalid minimal stars")
+		return &internal.TrackOptions{}, errors.New("got invalid minimal stars")
 	}
 
-	return interval, minStars, nil
+	return &internal.TrackOptions{interval: interval, minStars: minStars, tokenFile: tokenFile}, nil
 }
 
 func run() error {
@@ -100,12 +98,12 @@ Options:
 		return nil
 
 	case "track":
-		interval, minStars, err := parseInterval()
+		trackOptions, err := parseInterval()
 		if err != nil {
 			message := fmt.Sprintf("failed parsing interval: %v", err)
 			return usageError{message: message}
 		}
-		if err := internal.Track(interval, minStars, tokenFile); err != nil {
+		if err := internal.Track(trackOptions); err != nil {
 			return fmt.Errorf("failed tracking: %v", err)
 		}
 		return nil

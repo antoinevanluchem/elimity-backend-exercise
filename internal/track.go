@@ -8,18 +8,24 @@ import (
 	"github.com/google/go-github/v33/github"
 )
 
+type TrackOptions struct {
+	interval  time.Duration
+	minStars  int
+	tokenFile string
+}
+
 // Track tracks public GitHub repositories, continuously updating according to the given interval.
 //
 // The given interval must be greater than zero.
-func Track(interval time.Duration, minStars int, tokenFile string) error {
+func Track(trackOptions *TrackOptions) error {
 	fmt.Println("Dit is Track")
-	for ; ; <-time.Tick(interval) {
+	for ; ; <-time.Tick(trackOptions.interval) {
 		client := github.NewClient(nil)
 		con := context.Background()
 		listOptions := github.ListOptions{PerPage: 3}
 		searchOptions := &github.SearchOptions{ListOptions: listOptions, Sort: "updated"}
 
-		query := fmt.Sprintf("is:public stars:>=%d", minStars)
+		query := fmt.Sprintf("is:public stars:>=%d", trackOptions.minStars)
 		fmt.Println("Dit is de query ", query)
 
 		result, _, err := client.Search.Repositories(con, query, searchOptions)
