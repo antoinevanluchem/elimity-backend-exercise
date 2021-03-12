@@ -43,11 +43,13 @@ func Track(trackOptions *TrackOptions) error {
 				ownerName = *v
 			} else if v := owner.Company; v != nil {
 				ownerName = *v
+			} else if v := owner.Login; v != nil {
+				ownerName = *v
 			} else {
 				ownerName = ""
 			}
 
-			fmt.Println("Dit is repo", *repository)
+			// fmt.Println("Dit is repo", *repository)
 
 			fmt.Println("Let's go:")
 			fmt.Println(repoName)
