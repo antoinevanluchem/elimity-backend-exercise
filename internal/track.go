@@ -8,6 +8,7 @@ import (
 	"github.com/google/go-github/v33/github"
 )
 
+// TrackOptions specifies the optional parameters to the Track function.
 type TrackOptions struct {
 	Interval  time.Duration
 	MinStars  int
@@ -34,13 +35,11 @@ func Track(trackOptions *TrackOptions) error {
 		}
 		for _, repository := range result.Repositories {
 			repoName := *repository.Name
-			fmt.Println("repo Name ok")
 			updatedAt := *repository.UpdatedAt
-			fmt.Println("updated at ok")
 			owner := *repository.Owner
-			fmt.Printf("owner ok %v", owner)
 			ownerName := *owner.Login
-			fmt.Println("owner Name ok")
+
+			fmt.Println("Dit is repo", *repository)
 
 			fmt.Println("Let's go:")
 			fmt.Println(repoName)
