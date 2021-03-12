@@ -27,6 +27,7 @@ func Track(interval time.Duration, minStars int, tokenFile string) error {
 			return err
 		}
 		for _, repository := range result.Repositories {
+			fmt.Println("Variables go")
 			repoName := *repository.Name
 			owner := *repository.Owner
 			ownerName := *owner.Name
