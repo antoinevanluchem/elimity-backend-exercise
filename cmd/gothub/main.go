@@ -22,7 +22,7 @@ func log(message string) {
 }
 
 func main() {
-	fmt.Printf("Dit is main")
+	fmt.Println("Dit is main")
 	if err := run(); err != nil {
 		message := err.Error()
 		log(message)
@@ -44,7 +44,7 @@ func parseInterval() (time.Duration, int, error) {
 	set.DurationVar(&interval, "interval", 10*time.Second, "")
 
 	var minStars int
-	minStars = *set.Int("minimal stars", 0, "Filter out repositories with a star count below the given value")
+	minStars = *set.Int("min_stars", 0, "Filter out repositories with a star count below the given value")
 
 	set.SetOutput(ioutil.Discard)
 	args := args[2:]
@@ -75,7 +75,7 @@ Simple CLI for tracking public GitHub repositories.
 
 Usage:
   %[1]s help
-  %[1]s track [-interval=<interval>]
+  %[1]s track [-interval=<interval>] [-min_stars=<minStars>]
 
 Commands:
   help  Show usage information
@@ -83,6 +83,7 @@ Commands:
 
 Options:
   -interval=<interval> Repository update interval, greater than zero [default: 10s]
+  -min_stars=<minStars> Filter out repositories with a star count below the given value
 `
 		fmt.Fprintf(os.Stdout, usage, name)
 		return nil
