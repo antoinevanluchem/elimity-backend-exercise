@@ -46,10 +46,10 @@ func parseInterval() (time.Duration, int, error) {
 	set.DurationVar(&interval, "interval", 10*time.Second, "")
 
 	var minStars int
-	minStars = *set.Int("min_stars", 0, "Filter out repositories with a star count below the given value")
+	set.IntVar(&minStars, "min_stars", 0, "Filter out repositories with a star count below the given value")
 
 	var tF string
-	tF = *set.String("token_file", "", "GitHub personal access token will be read from the given file path")
+	set.StringVar(&tF, "token_file", "", "GitHub personal access token will be read from the given file path")
 	if tF != "" {
 		tokenFile = tF
 	}
