@@ -69,7 +69,7 @@ func parseInterval() (*internal.TrackOptions, error) {
 		return &internal.TrackOptions{}, errors.New("got invalid minimal stars")
 	}
 
-	return &internal.TrackOptions{interval: interval, minStars: minStars, tokenFile: tokenFile}, nil
+	return &internal.TrackOptions{Interval: interval, MinStars: minStars, TokenFile: tokenFile}, nil
 }
 
 func run() error {

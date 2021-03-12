@@ -9,9 +9,9 @@ import (
 )
 
 type TrackOptions struct {
-	interval  time.Duration
-	minStars  int
-	tokenFile string
+	Interval  time.Duration
+	MinStars  int
+	TokenFile string
 }
 
 // Track tracks public GitHub repositories, continuously updating according to the given interval.
