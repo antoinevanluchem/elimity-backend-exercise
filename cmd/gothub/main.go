@@ -57,7 +57,7 @@ func parseInterval() (time.Duration, int, error) {
 		return 0, 0, errors.New("got invalid interval")
 	}
 
-	if minStars <= 0 {
+	if minStars < 0 {
 		return 0, 0, errors.New("got invalid minimal stars")
 	}
 
