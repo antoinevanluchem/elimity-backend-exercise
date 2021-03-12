@@ -32,6 +32,7 @@ func Track(interval time.Duration, minStars int, tokenFile string) error {
 			ownerName := *owner.Name
 			updatedAt := *repository.UpdatedAt
 
+			fmt.Println("Let's go:")
 			fmt.Println(repoName)
 			fmt.Println(ownerName)
 			fmt.Println(updatedAt)

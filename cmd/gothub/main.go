@@ -54,7 +54,7 @@ func parseInterval() (time.Duration, int, error) {
 		tokenFile = tF
 	}
 
-	fmt.Printf("minStars %d", minStars)
+	fmt.Printf("minStars %d\n", minStars)
 
 	set.SetOutput(ioutil.Discard)
 	args := args[2:]
@@ -85,7 +85,7 @@ Simple CLI for tracking public GitHub repositories.
 
 Usage:
   %[1]s help
-  %[1]s track [-interval=<interval>] [-min_stars=<minStars>]
+  %[1]s track [-interval=<interval>] [-min_stars=<minStars>] [-token_file=<tokenFile>]
 
 Commands:
   help  Show usage information
@@ -94,6 +94,7 @@ Commands:
 Options:
   -interval=<interval> Repository update interval, greater than zero [default: 10s]
   -min_stars=<minStars> Filter out repositories with a star count below the given value
+  -token_file=<tokenFile> File path to GitHub personal access token
 `
 		fmt.Fprintf(os.Stdout, usage, name)
 		return nil
@@ -109,8 +110,13 @@ Options:
 		}
 		return nil
 
-	case "token-file":
-		tokenFile = args[2]
+	case "token_file":
+		tF, err := ioutil.ReadFile(args[2])
+		if err != nil {
+			message := fmt.Sprintf("failed reading from the path: %v", err)
+			return usageError{message: message}
+		}
+		tokenFile = string(tF)
 		return nil
 
 	default:
