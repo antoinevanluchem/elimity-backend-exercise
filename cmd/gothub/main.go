@@ -41,7 +41,7 @@ func makeName() string {
 }
 
 func parseInterval() (time.Duration, int, error) {
-	set := flag.NewFlagSet("", flag.ContinueOnError)
+	set := flag.NewFlagSet("", flag.ExitOnError)
 	var interval time.Duration
 	set.DurationVar(&interval, "interval", 10*time.Second, "")
 
