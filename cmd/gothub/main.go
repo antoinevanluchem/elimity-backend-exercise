@@ -38,19 +38,30 @@ func makeName() string {
 	return filepath.Base(path)
 }
 
-func parseInterval() (time.Duration, error) {
+func parseInterval() (time.Duration, int, error) {
 	set := flag.NewFlagSet("", flag.ContinueOnError)
 	var interval time.Duration
 	set.DurationVar(&interval, "interval", 10*time.Second, "")
+
+	var minStars int
+	minStars = *set.Int("minimal stars", 0, "Filter out repositories with a star count below the given value")
+
 	set.SetOutput(ioutil.Discard)
 	args := args[2:]
+
 	if err := set.Parse(args); err != nil {
-		return 0, errors.New("got invalid flags")
+		return 0, 0, errors.New("got invalid flags")
 	}
+
 	if interval <= 0 {
-		return 0, errors.New("got invalid interval")
+		return 0, 0, errors.New("got invalid interval")
 	}
-	return interval, nil
+
+	if minStars <= 0 {
+		return 0, 0, errors.New("got invalid minimal stars")
+	}
+
+	return interval, minStars, nil
 }
 
 func run() error {
@@ -77,12 +88,12 @@ Options:
 		return nil
 
 	case "track":
-		interval, err := parseInterval()
+		interval, minStars, err := parseInterval()
 		if err != nil {
 			message := fmt.Sprintf("failed parsing interval: %v", err)
 			return usageError{message: message}
 		}
-		if err := internal.Track(interval); err != nil {
+		if err := internal.Track(interval, minStars); err != nil {
 			return fmt.Errorf("failed tracking: %v", err)
 		}
 		return nil
