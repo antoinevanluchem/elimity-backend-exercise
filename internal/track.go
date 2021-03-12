@@ -11,7 +11,7 @@ import (
 // Track tracks public GitHub repositories, continuously updating according to the given interval.
 //
 // The given interval must be greater than zero.
-func Track(interval time.Duration, minStars int) error {
+func Track(interval time.Duration, minStars int, tokenFile string) error {
 	fmt.Println("Dit is Track")
 	for ; ; <-time.Tick(interval) {
 		client := github.NewClient(nil)
@@ -27,9 +27,14 @@ func Track(interval time.Duration, minStars int) error {
 			return err
 		}
 		for _, repository := range result.Repositories {
-			fmt.Println(*repository.Name)
-			fmt.Println(*repository.Owner.Name)
-			fmt.Println(*repository.UpdatedAt)
+			repoName := *repository.Name
+			owner := *repository.Owner
+			ownerName := *owner.Name
+			updatedAt := *repository.UpdatedAt
+
+			fmt.Println(repoName)
+			fmt.Println(ownerName)
+			fmt.Println(updatedAt)
 			fmt.Println("Dit is for loop in Track")
 		}
 	}

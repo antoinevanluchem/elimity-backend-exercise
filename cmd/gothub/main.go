@@ -15,6 +15,8 @@ import (
 
 var args = os.Args
 
+var tokenFile string = ""
+
 var name = makeName()
 
 func log(message string) {
@@ -45,6 +47,12 @@ func parseInterval() (time.Duration, int, error) {
 
 	var minStars int
 	minStars = *set.Int("min_stars", 0, "Filter out repositories with a star count below the given value")
+
+	var tF string
+	tF = *set.String("token_file", "", "GitHub personal access token will be read from the given file path")
+	if tF != "" {
+		tokenFile = tF
+	}
 
 	fmt.Printf("minStars %d", minStars)
 
@@ -96,9 +104,13 @@ Options:
 			message := fmt.Sprintf("failed parsing interval: %v", err)
 			return usageError{message: message}
 		}
-		if err := internal.Track(interval, minStars); err != nil {
+		if err := internal.Track(interval, minStars, tokenFile); err != nil {
 			return fmt.Errorf("failed tracking: %v", err)
 		}
+		return nil
+
+	case "token-file":
+		tokenFile = args[2]
 		return nil
 
 	default:
