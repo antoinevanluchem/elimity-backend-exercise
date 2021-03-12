@@ -37,7 +37,15 @@ func Track(trackOptions *TrackOptions) error {
 			repoName := *repository.Name
 			updatedAt := *repository.UpdatedAt
 			owner := *repository.Owner
-			ownerName := *owner.Login
+
+			var ownerName string
+			if v := owner.Name; v != nil {
+				ownerName = *v
+			} else if v := owner.Company; v != nil {
+				ownerName = *v
+			} else {
+				ownerName = ""
+			}
 
 			fmt.Println("Dit is repo", *repository)
 
