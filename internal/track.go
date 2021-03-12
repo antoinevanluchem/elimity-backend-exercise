@@ -39,12 +39,12 @@ func Track(trackOptions *TrackOptions) error {
 			fmt.Println("updated at ok")
 			owner := *repository.Owner
 			fmt.Printf("owner ok %v", owner)
-			// ownerName := *owner.Name
-			// fmt.Println("owner Name ok")
+			ownerName := *owner.Login
+			fmt.Println("owner Name ok")
 
 			fmt.Println("Let's go:")
 			fmt.Println(repoName)
-			// fmt.Println(ownerName)
+			fmt.Println(ownerName)
 			fmt.Println(updatedAt)
 			fmt.Println("Dit is for loop in Track")
 		}
