@@ -78,7 +78,7 @@ func (prettyPrinter *PrettyPrinter) printRow(row []string, width int) {
 	resultingRow := ""
 
 	for _, s := range row {
-		resultingRow += fmt.Sprintf("%-"+strconv.Itoa(width)+"s", s) + " |"
+		resultingRow += fmt.Sprintf("%-"+strconv.Itoa(width+2)+"s", s) + "|"
 	}
 
 	fmt.Println(resultingRow)
