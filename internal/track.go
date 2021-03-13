@@ -40,14 +40,14 @@ func Track(trackOptions *TrackOptions) error {
 			owner := *repository.Owner
 			ownerName := getOwnerName(&owner)
 
-			// stars := hoe df krijg je stars?
 			//TODO: pretty print
 
-			fmt.Println("Let's go:")
+			fmt.Println("-----------")
 			fmt.Println(repoName)
 			fmt.Println(ownerName)
 			fmt.Println(updatedAt)
 			fmt.Println(stars)
+			fmt.Println("-----------")
 		}
 	}
 }
