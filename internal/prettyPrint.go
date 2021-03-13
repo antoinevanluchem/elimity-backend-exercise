@@ -75,6 +75,8 @@ func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 		resultingRow += prefix + content + suffix
 	}
 
+	fmt.Println(resultingRow)
+
 }
 
 // Helper function
