@@ -55,15 +55,20 @@ func (prettyPrinter *PrettyPrinter) Print() {
 func (prettyPrinter *PrettyPrinter) getMaximalWidth() (max int) {
 
 	max = 0
+
+	fmt.Println("Header loop")
 	for _, v := range prettyPrinter.header {
+
+		fmt.Println(v)
 
 		if l := len(v); l > max {
 			max = l
 		}
 	}
 
+	fmt.Println("Data loop")
 	for _, v := range prettyPrinter.data {
-
+		fmt.Println(v)
 		if l := len(v); l > max {
 			max = l
 		}
@@ -78,7 +83,8 @@ func (prettyPrinter *PrettyPrinter) printRow(row []string, width int) {
 	resultingRow := ""
 
 	for _, s := range row {
-		resultingRow += fmt.Sprintf("%-"+strconv.Itoa(width+2)+"s", s) + "|"
+		r := " " + fmt.Sprintf("%-"+strconv.Itoa(width)+"s", s) + " |"
+		resultingRow += r
 	}
 
 	fmt.Println(resultingRow)
