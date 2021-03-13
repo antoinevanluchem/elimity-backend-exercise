@@ -33,8 +33,6 @@ func (pPrinter *PrettyPrinter) Print() {
 
 	widths := pPrinter.getWidths()
 
-	fmt.Println(*widths)
-
 	pPrinter.printHeaders(widths)
 
 	for _, row := range pPrinter.data {
@@ -47,7 +45,7 @@ func (pPrinter *PrettyPrinter) PrintLastNRows(n int) {
 
 	widths := pPrinter.getWidths()
 
-	for _, row := range pPrinter.data[len(pPrinter.data)-n-1:] {
+	for _, row := range pPrinter.data[len(pPrinter.data)-n:] {
 		pPrinter.printRow(&row, widths)
 	}
 }
