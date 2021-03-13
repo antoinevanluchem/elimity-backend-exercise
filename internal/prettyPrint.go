@@ -10,11 +10,13 @@ type PrettyPrinter struct {
 	nbCols  int
 	headers []string
 	data    []map[string]string
+	prefix  string
+	suffix  string
 }
 
 // Make a new pretty printer with the specified number of cols
 func NewPrettyPrinter(headers []string) *PrettyPrinter {
-	return &PrettyPrinter{headers: headers, nbCols: len(headers)}
+	return &PrettyPrinter{headers: headers, nbCols: len(headers), prefix: " ", suffix: " |"}
 }
 
 // Add a row to the data of the pretty printer
@@ -65,8 +67,6 @@ func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
 
 func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 	resultingRow := ""
-	prefix := " "
-	suffix := " |"
 
 	for i, h := range pPrinter.headers {
 
@@ -74,9 +74,9 @@ func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 		content := fmt.Sprintf(format, h)
 
 		if i == len(pPrinter.headers)-1 {
-			resultingRow += prefix + content
+			resultingRow += pPrinter.prefix + content
 		} else {
-			resultingRow += prefix + content + suffix
+			resultingRow += pPrinter.prefix + content + pPrinter.suffix
 		}
 	}
 
@@ -88,8 +88,6 @@ func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 func (pPrinter *PrettyPrinter) printRow(row *map[string]string, widths *map[string]int) {
 
 	resultingRow := ""
-	prefix := " "
-	suffix := " |"
 
 	for i, h := range pPrinter.headers {
 
@@ -98,9 +96,9 @@ func (pPrinter *PrettyPrinter) printRow(row *map[string]string, widths *map[stri
 		content := fmt.Sprintf(format, a)
 
 		if i == len(pPrinter.headers)-1 {
-			resultingRow += prefix + content
+			resultingRow += pPrinter.prefix + content
 		} else {
-			resultingRow += prefix + content + suffix
+			resultingRow += pPrinter.prefix + content + pPrinter.suffix
 		}
 	}
 
