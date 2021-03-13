@@ -45,7 +45,7 @@ func (prettyPrinter *PrettyPrinter) Print() {
 
 	for _, row := range prettyPrinter.data {
 
-		prettyPrinter.printRow(row)
+		prettyPrinter.printRow(row, width)
 	}
 }
 
