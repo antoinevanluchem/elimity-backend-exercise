@@ -3,6 +3,7 @@ package internal
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/google/go-github/v33/github"
@@ -45,7 +46,7 @@ func Track(trackOptions *TrackOptions) error {
 			owner := *getOwner(repository)
 			ownerName := *getOwnerName(&owner)
 
-			row := []string{ownerName, repoName, updatedAt.String(), string(stars)}
+			row := []string{ownerName, repoName, updatedAt.String(), strconv.Itoa(stars)}
 			prettyPrinter.AddRow(row)
 		}
 
