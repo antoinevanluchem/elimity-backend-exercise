@@ -29,19 +29,19 @@ func (pPrinter *PrettyPrinter) AddRow(row map[string]string) error {
 	}
 }
 
-func (pPrinter *PrettyPrinter) Print() {
+// func (pPrinter *PrettyPrinter) Print() {
 
-	widths := pPrinter.getWidths()
+// 	widths := pPrinter.getWidths()
 
-	fmt.Println(*widths)
+// 	fmt.Println(*widths)
 
-	pPrinter.printHeaders(widths)
+// 	pPrinter.printHeaders(widths)
 
-	for _, row := range pPrinter.data {
+// 	for _, row := range pPrinter.data {
 
-		pPrinter.printRow(&row, widths)
-	}
-}
+// 		pPrinter.printRow(&row, widths)
+// 	}
+// }
 
 // Helper function
 func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
@@ -65,8 +65,9 @@ func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
 	return &max
 }
 
-func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
+func (pPrinter *PrettyPrinter) PrintHeaders() {
 	resultingRow := ""
+	widths := pPrinter.getWidths()
 
 	for i, h := range pPrinter.headers {
 
@@ -85,14 +86,15 @@ func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 }
 
 // Helper function
-func (pPrinter *PrettyPrinter) printRow(row *map[string]string, widths *map[string]int) {
+func (pPrinter *PrettyPrinter) PrintRow(row map[string]string) {
 
 	resultingRow := ""
+	widths := pPrinter.getWidths()
 
 	for i, h := range pPrinter.headers {
 
 		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
-		a := (*row)[h]
+		a := row[h]
 		content := fmt.Sprintf(format, a)
 
 		if i == len(pPrinter.headers)-1 {
