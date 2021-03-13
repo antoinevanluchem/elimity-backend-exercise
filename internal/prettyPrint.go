@@ -41,6 +41,8 @@ func (prettyPrinter *PrettyPrinter) Print() {
 
 	width := prettyPrinter.getMaximalWidth()
 
+	fmt.Printf("Width is %d\n", width)
+
 	prettyPrinter.printRow(prettyPrinter.header, width)
 
 	for _, row := range prettyPrinter.data {
