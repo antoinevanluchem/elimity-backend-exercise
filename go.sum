@@ -1,3 +1,5 @@
+github.com/elimity-com/backend-intern-exercise v0.0.0-20210309114531-4b25d9bb2c5b h1:4t3DzmOY0hp63s1EstKLb8rLMblHvaFSTkslHeeD1mM=
+github.com/elimity-com/backend-intern-exercise v0.0.0-20210309114531-4b25d9bb2c5b/go.mod h1:XXI8iz5o3l/O7h/nz8wu3gkQmnng8tS7sAedR4L5ceI=
 github.com/golang/protobuf v1.3.2/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/google/go-github/v33 v33.0.0 h1:qAf9yP0qc54ufQxzwv+u9H0tiVOnPJxo0lI/JXqw3ZM=
 github.com/google/go-github/v33 v33.0.0/go.mod h1:GMdDnVZY/2TsWgp/lkYnpSAh6TrzhANBBwm6k6TTEXg=
