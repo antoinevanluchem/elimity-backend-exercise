@@ -31,6 +31,8 @@ func (pPrinter *PrettyPrinter) Print() {
 
 	widths := pPrinter.getWidths()
 
+	fmt.Println(*widths)
+
 	pPrinter.printHeaders(widths)
 
 	for _, row := range pPrinter.data {
@@ -67,7 +69,8 @@ func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 	suffix := " |"
 
 	for _, h := range pPrinter.headers {
-		fmt.Println("Print headers for loop")
+
+		fmt.Println(h)
 
 		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
 		content := fmt.Sprintf(format, h)
