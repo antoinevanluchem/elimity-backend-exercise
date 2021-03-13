@@ -34,11 +34,11 @@ func Track(trackOptions *TrackOptions) error {
 			return err
 		}
 		for _, repository := range result.Repositories {
-			repoName := *repository.Name
-			updatedAt := *repository.UpdatedAt
-			stars := *repository.StargazersCount
-			owner := *repository.Owner
-			ownerName := getOwnerName(&owner)
+			repoName := *getRepoName(repository)
+			updatedAt := *getUpdatedAt(repository)
+			stars := *getStars(repository)
+			owner := *getOwner(repository)
+			ownerName := *getOwnerName(&owner)
 
 			//TODO: pretty print
 
@@ -50,19 +50,4 @@ func Track(trackOptions *TrackOptions) error {
 			fmt.Println("-----------")
 		}
 	}
-}
-
-func getOwnerName(owner *github.User) (ownerName string) {
-
-	if v := owner.Name; v != nil {
-		ownerName = *v
-	} else if v := owner.Company; v != nil {
-		ownerName = *v
-	} else if v := owner.Login; v != nil {
-		ownerName = *v
-	} else {
-		ownerName = ""
-	}
-
-	return
 }
