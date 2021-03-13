@@ -39,6 +39,7 @@ func Track(trackOptions *TrackOptions) error {
 		prettyPrinter := NewPrettyPrinter(headers)
 
 		for _, repository := range result.Repositories {
+			print(repository.Name)
 			repoName := *getRepoName(repository)
 			updatedAt := *getUpdatedAt(repository)
 			stars := *getStars(repository)
