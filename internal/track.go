@@ -28,7 +28,6 @@ func Track(trackOptions *TrackOptions) error {
 		searchOptions := &github.SearchOptions{ListOptions: listOptions, Sort: "updated"}
 
 		query := fmt.Sprintf("is:public stars:>=%d", trackOptions.MinStars)
-		fmt.Println("Dit is de query ", query)
 
 		result, _, err := client.Search.Repositories(con, query, searchOptions)
 		if err != nil {
@@ -39,7 +38,6 @@ func Track(trackOptions *TrackOptions) error {
 		pPrinter := NewPrettyPrinter(headers)
 
 		for _, repository := range result.Repositories {
-			print(*repository.Name)
 			repoName := *getRepoName(repository)
 			updatedAt := *getUpdatedAt(repository)
 			stars := *getStars(repository)
