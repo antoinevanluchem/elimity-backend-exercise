@@ -42,13 +42,19 @@ func (pPrinter *PrettyPrinter) Print() {
 // Helper function
 func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
 	max := map[string]int{}
+
 	currentMax := 0
+
 	for _, column := range pPrinter.headers {
+
 		currentMax = len(column)
+
 		for _, row := range pPrinter.data {
+
 			if l := len(row[column]); l < currentMax {
 				currentMax = l
 			}
+
 		}
 		max[column] = currentMax
 	}
@@ -61,6 +67,7 @@ func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 	suffix := " |"
 
 	for _, h := range pPrinter.headers {
+		fmt.Println("Print headers for loop")
 
 		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
 		content := fmt.Sprintf(format, h)
