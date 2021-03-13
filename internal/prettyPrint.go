@@ -7,87 +7,83 @@ import (
 )
 
 type PrettyPrinter struct {
-	nbCols int
-	header []string
-	data   [][]string
+	nbCols  int
+	headers []string
+	data    []map[string]string
 }
 
 // Make a new pretty printer with the specified number of cols
-func NewPrettyPrinter(nbCols int) *PrettyPrinter {
-	return &PrettyPrinter{nbCols: nbCols}
+func NewPrettyPrinter(headers []string) *PrettyPrinter {
+	return &PrettyPrinter{headers: headers, nbCols: len(headers)}
 }
 
 // Add a row to the data of the pretty printer
-func (prettyPrinter *PrettyPrinter) AddRow(row []string) error {
-	if len(row) == prettyPrinter.nbCols {
-		prettyPrinter.data = append(prettyPrinter.data, row)
+func (pPrinter *PrettyPrinter) AddRow(row map[string]string) error {
+	if len(row) == pPrinter.nbCols {
+		pPrinter.data = append(pPrinter.data, row)
 		return nil
 	} else {
 		return errors.New("got invalid sized row")
 	}
 }
 
-// Set the headers of the pretty printer
-func (prettyPrinter *PrettyPrinter) SetHeader(header []string) error {
-	if len(header) == prettyPrinter.nbCols {
-		prettyPrinter.header = header
-		return nil
-	} else {
-		return errors.New("got invalid sized headers")
-	}
-}
+func (pPrinter *PrettyPrinter) Print() {
 
-func (prettyPrinter *PrettyPrinter) Print() {
+	widths := pPrinter.getWidths()
 
-	width := prettyPrinter.getMaximalWidth()
+	pPrinter.printHeaders(widths)
 
-	fmt.Printf("Width is %d\n", width)
+	for _, row := range pPrinter.data {
 
-	prettyPrinter.printRow(prettyPrinter.header, width)
-
-	for _, row := range prettyPrinter.data {
-
-		prettyPrinter.printRow(row, width)
+		pPrinter.printRow(&row, widths)
 	}
 }
 
 // Helper function
-func (prettyPrinter *PrettyPrinter) getMaximalWidth() (max int) {
-
-	max = 0
-
-	fmt.Println("Header loop")
-	for _, v := range prettyPrinter.header {
-
-		fmt.Println(v)
-
-		if l := len(v); l > max {
-			max = l
-		}
-	}
-
-	fmt.Println("Data loop")
-	for _, v := range prettyPrinter.data {
-
-		for _, w := range v {
-			if l := len(w); l > max {
-				max = l
+func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
+	max := map[string]int{}
+	currentMax := 0
+	for _, column := range pPrinter.headers {
+		currentMax = len(column)
+		for _, row := range pPrinter.data {
+			if l := len(row[column]); l < currentMax {
+				currentMax = l
 			}
 		}
+		max[column] = currentMax
+	}
+	return &max
+}
 
+func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
+	resultingRow := ""
+	prefix := " "
+	suffix := " |"
+
+	for _, h := range pPrinter.headers {
+
+		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
+		content := fmt.Sprintf(format, h)
+
+		resultingRow += prefix + content + suffix
 	}
 
-	return
 }
 
 // Helper function
-func (prettyPrinter *PrettyPrinter) printRow(row []string, width int) {
+func (pPrinter *PrettyPrinter) printRow(row *map[string]string, widths *map[string]int) {
 
 	resultingRow := ""
+	prefix := " "
+	suffix := " |"
 
-	for _, s := range row {
-		r := " " + fmt.Sprintf("%-"+strconv.Itoa(width)+"s", s) + " |"
-		resultingRow += r
+	for _, h := range pPrinter.headers {
+
+		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
+		a := (*row)[h]
+		content := fmt.Sprintf(format, a)
+
+		resultingRow += prefix + content + suffix
 	}
 
 	fmt.Println(resultingRow)

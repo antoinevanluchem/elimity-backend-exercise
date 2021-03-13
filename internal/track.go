@@ -36,8 +36,7 @@ func Track(trackOptions *TrackOptions) error {
 		}
 
 		headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
-		prettyPrinter := NewPrettyPrinter(len(headers))
-		prettyPrinter.SetHeader(headers)
+		prettyPrinter := NewPrettyPrinter(headers)
 
 		for _, repository := range result.Repositories {
 			repoName := *getRepoName(repository)
@@ -46,7 +45,7 @@ func Track(trackOptions *TrackOptions) error {
 			owner := *getOwner(repository)
 			ownerName := *getOwnerName(&owner)
 
-			row := []string{ownerName, repoName, updatedAt.String(), strconv.Itoa(stars)}
+			row := map[string]string{"Owner": ownerName, "Name": repoName, "Updated at (UTC)": updatedAt.String(), "Star count": strconv.Itoa(stars)}
 			prettyPrinter.AddRow(row)
 		}
 
