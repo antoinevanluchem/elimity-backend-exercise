@@ -20,8 +20,8 @@ type TrackOptions struct {
 //
 // The given interval must be greater than zero.
 func Track(trackOptions *TrackOptions) error {
-	fmt.Println("Dit is Track")
-	for ; ; <-time.Tick(trackOptions.Interval) {
+
+	for i := 0; ; <-time.Tick(trackOptions.Interval) {
 		client := github.NewClient(nil)
 		con := context.Background()
 		listOptions := github.ListOptions{PerPage: 3}
@@ -36,8 +36,7 @@ func Track(trackOptions *TrackOptions) error {
 		}
 
 		headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
-		prettyPrinter := NewPrettyPrinter(headers)
-		prettyPrinter.PrintHeaders()
+		pPrinter := NewPrettyPrinter(headers)
 
 		for _, repository := range result.Repositories {
 			print(*repository.Name)
@@ -48,9 +47,16 @@ func Track(trackOptions *TrackOptions) error {
 			ownerName := *getOwnerName(&owner)
 
 			row := map[string]string{"Owner": ownerName, "Name": repoName, "Updated at (UTC)": updatedAt.String(), "Star count": strconv.Itoa(stars)}
-			prettyPrinter.AddRow(row)
-			prettyPrinter.PrintRow(row)
+			pPrinter.AddRow(row)
 		}
+
+		if i == 0 {
+			pPrinter.Print()
+		} else {
+			pPrinter.PrintLastNRows(len(result.Repositories))
+		}
+
+		i++
 
 	}
 }
