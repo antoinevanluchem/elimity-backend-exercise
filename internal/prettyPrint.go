@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// A struct that defines the pretty printer
 type PrettyPrinter struct {
 	nbCols  int
 	headers []string
@@ -14,7 +15,7 @@ type PrettyPrinter struct {
 	suffix  string
 }
 
-// Make a new pretty printer with the specified number of cols
+// Make a new pretty printer with the given headers as headers
 func NewPrettyPrinter(headers []string) *PrettyPrinter {
 	return &PrettyPrinter{headers: headers, nbCols: len(headers), prefix: " ", suffix: " |"}
 }
@@ -29,6 +30,7 @@ func (pPrinter *PrettyPrinter) AddRow(row map[string]string) error {
 	}
 }
 
+// Print the whole table: headers and data
 func (pPrinter *PrettyPrinter) Print() {
 
 	widths := pPrinter.getWidths()
@@ -41,6 +43,7 @@ func (pPrinter *PrettyPrinter) Print() {
 	}
 }
 
+// Print the last N rows of the data
 func (pPrinter *PrettyPrinter) PrintLastNRows(n int) {
 
 	widths := pPrinter.getWidths()
@@ -50,7 +53,7 @@ func (pPrinter *PrettyPrinter) PrintLastNRows(n int) {
 	}
 }
 
-// Helper function
+// Helper function to determine the widths of every column
 func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
 	max := map[string]int{}
 
@@ -72,6 +75,7 @@ func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
 	return &max
 }
 
+// Helper function to print the header row
 func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 	resultingRow := ""
 
@@ -91,7 +95,7 @@ func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 
 }
 
-// Helper function
+// Helper function to print a row that is not a header row
 func (pPrinter *PrettyPrinter) printRow(row *map[string]string, widths *map[string]int) {
 
 	resultingRow := ""
