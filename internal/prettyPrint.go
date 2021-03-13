@@ -68,10 +68,13 @@ func (prettyPrinter *PrettyPrinter) getMaximalWidth() (max int) {
 
 	fmt.Println("Data loop")
 	for _, v := range prettyPrinter.data {
-		fmt.Println(v)
-		if l := len(v); l > max {
-			max = l
+
+		for _, w := range v {
+			if l := len(w); l > max {
+				max = l
+			}
 		}
+
 	}
 
 	return
