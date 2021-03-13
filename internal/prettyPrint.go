@@ -53,7 +53,7 @@ func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
 
 		for _, row := range pPrinter.data {
 
-			if l := len(row[column]); l < currentMax {
+			if l := len(row[column]); currentMax < l {
 				currentMax = l
 			}
 
