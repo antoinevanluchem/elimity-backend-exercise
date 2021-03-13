@@ -68,14 +68,16 @@ func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 	prefix := " "
 	suffix := " |"
 
-	for _, h := range pPrinter.headers {
-
-		fmt.Println(h)
+	for i, h := range pPrinter.headers {
 
 		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
 		content := fmt.Sprintf(format, h)
 
-		resultingRow += prefix + content + suffix
+		if i == len(pPrinter.headers)-1 {
+			resultingRow += prefix + content
+		} else {
+			resultingRow += prefix + content + suffix
+		}
 	}
 
 	fmt.Println(resultingRow)
@@ -89,13 +91,17 @@ func (pPrinter *PrettyPrinter) printRow(row *map[string]string, widths *map[stri
 	prefix := " "
 	suffix := " |"
 
-	for _, h := range pPrinter.headers {
+	for i, h := range pPrinter.headers {
 
 		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
 		a := (*row)[h]
 		content := fmt.Sprintf(format, a)
 
-		resultingRow += prefix + content + suffix
+		if i == len(pPrinter.headers)-1 {
+			resultingRow += prefix + content
+		} else {
+			resultingRow += prefix + content + suffix
+		}
 	}
 
 	fmt.Println(resultingRow)
