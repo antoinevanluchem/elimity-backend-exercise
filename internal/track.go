@@ -21,6 +21,9 @@ type TrackOptions struct {
 // The given interval must be greater than zero.
 func Track(trackOptions *TrackOptions) error {
 
+	headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
+	pPrinter := NewPrettyPrinter(headers)
+
 	for i := 0; ; <-time.Tick(trackOptions.Interval) {
 		client := github.NewClient(nil)
 		con := context.Background()
@@ -33,9 +36,6 @@ func Track(trackOptions *TrackOptions) error {
 		if err != nil {
 			return err
 		}
-
-		headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
-		pPrinter := NewPrettyPrinter(headers)
 
 		for _, repository := range result.Repositories {
 			repoName := *getRepoName(repository)
