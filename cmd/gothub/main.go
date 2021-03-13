@@ -108,7 +108,7 @@ Options:
 		}
 		return nil
 
-	case "token_file":
+	case "token_file": //TODO: testings en oplossen
 		tF, err := ioutil.ReadFile(args[2])
 		if err != nil {
 			message := fmt.Sprintf("failed reading from the path: %v", err)

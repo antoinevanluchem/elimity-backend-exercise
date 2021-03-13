@@ -36,26 +36,33 @@ func Track(trackOptions *TrackOptions) error {
 		for _, repository := range result.Repositories {
 			repoName := *repository.Name
 			updatedAt := *repository.UpdatedAt
+			stars := *repository.StargazersCount
 			owner := *repository.Owner
+			ownerName := getOwnerName(&owner)
 
-			var ownerName string
-			if v := owner.Name; v != nil {
-				ownerName = *v
-			} else if v := owner.Company; v != nil {
-				ownerName = *v
-			} else if v := owner.Login; v != nil {
-				ownerName = *v
-			} else {
-				ownerName = ""
-			}
-
-			// fmt.Println("Dit is repo", *repository)
+			// stars := hoe df krijg je stars?
+			//TODO: pretty print
 
 			fmt.Println("Let's go:")
 			fmt.Println(repoName)
 			fmt.Println(ownerName)
 			fmt.Println(updatedAt)
-			fmt.Println("Dit is for loop in Track")
+			fmt.Println(stars)
 		}
 	}
+}
+
+func getOwnerName(owner *github.User) (ownerName string) {
+
+	if v := owner.Name; v != nil {
+		ownerName = *v
+	} else if v := owner.Company; v != nil {
+		ownerName = *v
+	} else if v := owner.Login; v != nil {
+		ownerName = *v
+	} else {
+		ownerName = ""
+	}
+
+	return
 }
