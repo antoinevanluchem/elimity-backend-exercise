@@ -13,9 +13,6 @@ import (
 )
 
 var args = os.Args
-var pathFile = ""
-
-// var tokenFile string = ""
 
 var name = makeName()
 
@@ -85,7 +82,7 @@ Simple CLI for tracking public GitHub repositories.
 
 Usage:
   %[1]s help
-  %[1]s track [-interval=<interval>] [-min_stars=<minStars>] [-token_file=<tokenFile>]
+  %[1]s track [-interval=<interval>] [-min_stars=<minStars>] [-token_path=<tokenPath>]
 
 Commands:
   help  Show usage information
@@ -100,7 +97,6 @@ Options:
 		return nil
 
 	case "track":
-		fmt.Println(pathFile)
 		trackOptions, err := parseTrackOptions()
 		if err != nil {
 			message := fmt.Sprintf("failed parsing track options: %v", err)
@@ -109,10 +105,6 @@ Options:
 		if err := internal.Track(trackOptions); err != nil {
 			return fmt.Errorf("failed tracking: %v", err)
 		}
-		return nil
-
-	case "path_file":
-		pathFile = args[2]
 		return nil
 
 	default:
