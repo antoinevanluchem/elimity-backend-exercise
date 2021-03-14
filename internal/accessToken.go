@@ -11,7 +11,7 @@ type AccessToken struct {
 }
 
 // Function to read the access token at a specified path
-// If no path is provided (empty string), an empty access token (empty string) is returned
+// If no path is provided (empty string), an empty access token is returned
 func ReadTokenFile(path string) (AccessToken, error) {
 
 	if path == "" {

@@ -18,7 +18,7 @@ func randomString(seed int64, n int) string {
 	return string(result)
 }
 
-func TestWidhts(t *testing.T) {
+func TestWidhts_only_headers(t *testing.T) {
 
 	var seed int64 = 331
 
@@ -38,6 +38,45 @@ func TestWidhts(t *testing.T) {
 
 			if len(header) != got {
 				t.Errorf("widths[%s] = %d; want %d", header, got, len(header))
+			}
+
+		}
+	}
+
+}
+
+func TestWidhts_big_table_first_row_has_bigger_entries(t *testing.T) {
+
+	var seed int64 = 331
+
+	header_lenghts := []int{1, 2, 3, 4}
+	headers := make([]string, len(header_lenghts))
+
+	for i := 0; i < len(header_lenghts); i++ {
+		headers[i] = randomString(seed, header_lenghts[i])
+	}
+
+	row_lengths := []int{3, 4, 5, 6}
+	row := make(map[string]string, len(row_lengths))
+	for i := 0; i < len(row_lengths); i++ {
+		row[headers[i]] = randomString(seed, row_lengths[i])
+	}
+
+	pPrinter := NewPrettyPrinter(headers, "", "")
+	pPrinter.AddRow(row)
+
+	widths := pPrinter.getWidths()
+
+	for _, header := range headers {
+
+		if got, ok := (*widths)[header]; ok {
+
+			if r, ok := row[header]; ok {
+
+				if actual := len(r); actual != got {
+					t.Errorf("widths[%s] = %d; want %d", header, got, actual)
+
+				}
 			}
 
 		}

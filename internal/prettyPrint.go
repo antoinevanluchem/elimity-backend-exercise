@@ -9,7 +9,7 @@ import (
 // A struct that defines the pretty printer
 // nbCols 		= number of columns of the table
 // headers 		= headers (first row) of the table
-// data			= all other rows of the table
+// data			= all other rows of the table, a single row is a map with key the column and value the content
 // prefix 		= the prefix of the content of an element in the table
 // suffix 		= the suffix of the content of an element in the table
 type PrettyPrinter struct {
