@@ -55,9 +55,9 @@ func getStars(repo *github.Repository) (stars *int) {
 
 func getOwnerName(owner *github.User) (ownerName *string) {
 
-	if v := owner.Name; v != nil {
+	if v := owner.Company; v != nil {
 		ownerName = v
-	} else if v := owner.Company; v != nil {
+	} else if v := owner.Name; v != nil {
 		ownerName = v
 	} else if v := owner.Login; v != nil {
 		ownerName = v
