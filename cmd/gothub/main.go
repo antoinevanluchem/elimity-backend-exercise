@@ -113,6 +113,7 @@ Options:
 
 	case "path_file":
 		pathFile = args[2]
+		return nil
 
 	default:
 		return usageError{message: "got invalid command"}
