@@ -11,15 +11,16 @@ import (
 )
 
 // TrackOptions specifies the optional parameters to the Track function.
+// Interval = repository update interval
+// MinStars = minimal star count of repositories
+// AccesToken = acces token for authenticated requests
 type TrackOptions struct {
 	Interval    time.Duration
 	MinStars    int
-	AccessToken string
+	AccessToken AccessToken
 }
 
-// Track tracks public GitHub repositories, continuously updating according to the given interval.
-//
-// The given interval must be greater than zero.
+// Track tracks public GitHub repositories, optional parameters must be given via a TrackOptions struct.
 func Track(trackOptions *TrackOptions) error {
 
 	headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
@@ -65,17 +66,17 @@ func Track(trackOptions *TrackOptions) error {
 
 // Helper function to get a new github client and context
 // If a accessToken is given the github client sends authenticated requests, if no accessToken is given the github client sends anonymous requests
-func getNewClient(accessToken string) (*github.Client, context.Context) {
+func getNewClient(accessToken AccessToken) (*github.Client, context.Context) {
 
 	con := context.Background()
 
-	if accessToken == "" {
+	if accessToken.Token == "" {
 		return github.NewClient(nil), con
 
 	}
 
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: accessToken},
+		&oauth2.Token{AccessToken: accessToken.Token},
 	)
 	tc := oauth2.NewClient(con, ts)
 

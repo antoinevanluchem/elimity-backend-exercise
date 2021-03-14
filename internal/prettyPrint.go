@@ -7,6 +7,11 @@ import (
 )
 
 // A struct that defines the pretty printer
+// nbCols 		= number of columns of the table
+// headers 		= headers (first row) of the table
+// data			= all other rows of the table
+// prefix 		= the prefix of the content of an element in the table
+// suffix 		= the suffix of the content of an element in the table
 type PrettyPrinter struct {
 	nbCols  int
 	headers []string
@@ -15,7 +20,7 @@ type PrettyPrinter struct {
 	suffix  string
 }
 
-// Make a new pretty printer with the given headers as headers
+// Make a new pretty printer
 func NewPrettyPrinter(headers []string, prefix string, suffix string) *PrettyPrinter {
 	return &PrettyPrinter{headers: headers, nbCols: len(headers), prefix: prefix, suffix: suffix}
 }
@@ -25,9 +30,10 @@ func (pPrinter *PrettyPrinter) AddRow(row map[string]string) error {
 	if len(row) == pPrinter.nbCols {
 		pPrinter.data = append(pPrinter.data, row)
 		return nil
-	} else {
-		return errors.New("got invalid sized row")
 	}
+
+	return errors.New("got invalid sized row")
+
 }
 
 // Print the whole table: headers and data
