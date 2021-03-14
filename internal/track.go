@@ -11,9 +11,9 @@ import (
 
 // TrackOptions specifies the optional parameters to the Track function.
 type TrackOptions struct {
-	Interval  time.Duration
-	MinStars  int
-	TokenFile string
+	Interval    time.Duration
+	MinStars    int
+	AccessToken string
 }
 
 // Track tracks public GitHub repositories, continuously updating according to the given interval.
@@ -22,13 +22,16 @@ type TrackOptions struct {
 func Track(trackOptions *TrackOptions) error {
 
 	headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
-	pPrinter := NewPrettyPrinter(headers)
+	pPrinter := NewPrettyPrinter(headers, " ", " |")
 
 	for i := 0; ; <-time.Tick(trackOptions.Interval) {
 		client := github.NewClient(nil)
 		con := context.Background()
 		listOptions := github.ListOptions{PerPage: 3}
 		searchOptions := &github.SearchOptions{ListOptions: listOptions, Sort: "updated"}
+
+		fmt.Println("access token")
+		fmt.Println(trackOptions.AccessToken)
 
 		query := fmt.Sprintf("is:public stars:>=%d", trackOptions.MinStars)
 
@@ -44,7 +47,7 @@ func Track(trackOptions *TrackOptions) error {
 			owner := *getOwner(repository)
 			ownerName := *getOwnerName(&owner)
 
-			row := map[string]string{"Owner": ownerName, "Name": repoName, "Updated at (UTC)": updatedAt.String(), "test": strconv.Itoa(stars)}
+			row := map[string]string{"Owner": ownerName, "Name": repoName, "Updated at (UTC)": updatedAt.String(), "Star count": strconv.Itoa(stars)}
 			pPrinter.AddRow(row)
 		}
 

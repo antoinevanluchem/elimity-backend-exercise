@@ -16,8 +16,8 @@ type PrettyPrinter struct {
 }
 
 // Make a new pretty printer with the given headers as headers
-func NewPrettyPrinter(headers []string) *PrettyPrinter {
-	return &PrettyPrinter{headers: headers, nbCols: len(headers), prefix: " ", suffix: " |"}
+func NewPrettyPrinter(headers []string, prefix string, suffix string) *PrettyPrinter {
+	return &PrettyPrinter{headers: headers, nbCols: len(headers), prefix: prefix, suffix: suffix}
 }
 
 // Add a row to the data of the pretty printer

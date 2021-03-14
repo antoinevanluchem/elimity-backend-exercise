@@ -15,7 +15,7 @@ import (
 
 var args = os.Args
 
-var tokenFile string = ""
+// var tokenFile string = ""
 
 var name = makeName()
 
@@ -42,17 +42,15 @@ func makeName() string {
 
 func parseInterval() (*internal.TrackOptions, error) {
 	set := flag.NewFlagSet("", flag.ExitOnError)
+
 	var interval time.Duration
 	set.DurationVar(&interval, "interval", 10*time.Second, "")
 
 	var minStars int
 	set.IntVar(&minStars, "min_stars", 0, "Filter out repositories with a star count below the given value")
 
-	var tF string
-	set.StringVar(&tF, "token_file", "", "GitHub personal access token will be read from the given file path")
-	if tF != "" {
-		tokenFile = tF
-	}
+	var tokenPath string
+	set.StringVar(&tokenPath, "token_path", "", "GitHub personal access token will be read from the given file path")
 
 	set.SetOutput(ioutil.Discard)
 	args := args[2:]
@@ -69,7 +67,12 @@ func parseInterval() (*internal.TrackOptions, error) {
 		return &internal.TrackOptions{}, errors.New("got invalid minimal stars")
 	}
 
-	return &internal.TrackOptions{Interval: interval, MinStars: minStars, TokenFile: tokenFile}, nil
+	accessToken, err := internal.ReadTokenFile(tokenPath)
+	if err != nil {
+		return &internal.TrackOptions{}, errors.New("something went wrong when reading the file from the path")
+	}
+
+	return &internal.TrackOptions{Interval: interval, MinStars: minStars, AccessToken: accessToken}, nil
 }
 
 func run() error {
@@ -108,14 +111,14 @@ Options:
 		}
 		return nil
 
-	case "token_file": //TODO: testings en oplossen
-		tF, err := ioutil.ReadFile(args[2])
-		if err != nil {
-			message := fmt.Sprintf("failed reading from the path: %v", err)
-			return usageError{message: message}
-		}
-		tokenFile = string(tF)
-		return nil
+	// case "token_file": //TODO: testings en oplossen
+	// 	tF, err := ioutil.ReadFile(args[2])
+	// 	if err != nil {
+	// 		message := fmt.Sprintf("failed reading from the path: %v", err)
+	// 		return usageError{message: message}
+	// 	}
+	// 	tokenFile = string(tF)
+	// 	return nil
 
 	default:
 		return usageError{message: "got invalid command"}
