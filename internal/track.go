@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/go-github/v33/github"
+	"golang.org/x/oauth2"
 )
 
 // TrackOptions specifies the optional parameters to the Track function.
@@ -25,13 +26,18 @@ func Track(trackOptions *TrackOptions) error {
 	pPrinter := NewPrettyPrinter(headers, " ", " |")
 
 	for i := 0; ; <-time.Tick(trackOptions.Interval) {
-		client := github.NewClient(nil)
+
 		con := context.Background()
+		ts := oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: trackOptions.AccessToken},
+		)
+		tc := oauth2.NewClient(con, ts)
+		client := github.NewClient(tc)
+
+		// client := github.NewClient(nil)
+		// con := context.Background()
 		listOptions := github.ListOptions{PerPage: 3}
 		searchOptions := &github.SearchOptions{ListOptions: listOptions, Sort: "updated"}
-
-		fmt.Println("access token")
-		fmt.Println(trackOptions.AccessToken)
 
 		query := fmt.Sprintf("is:public stars:>=%d", trackOptions.MinStars)
 

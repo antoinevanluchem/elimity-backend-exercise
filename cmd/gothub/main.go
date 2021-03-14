@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/antoinevanluchem/elimity-backend-exercise/internal"
-	// "github.com/elimity-com/backend-intern-exercise/internal"
 )
 
 var args = os.Args
@@ -40,7 +39,7 @@ func makeName() string {
 	return filepath.Base(path)
 }
 
-func parseInterval() (*internal.TrackOptions, error) {
+func parseTrackOptions() (*internal.TrackOptions, error) {
 	set := flag.NewFlagSet("", flag.ExitOnError)
 
 	var interval time.Duration
@@ -95,30 +94,21 @@ Commands:
 Options:
   -interval=<interval> Repository update interval, greater than zero [default: 10s]
   -min_stars=<minStars> Filter out repositories with a star count below the given value
-  -token_file=<tokenFile> File path to GitHub personal access token
+  -token_path=<tokenPath> File path to GitHub personal access token
 `
 		fmt.Fprintf(os.Stdout, usage, name)
 		return nil
 
 	case "track":
-		trackOptions, err := parseInterval()
+		trackOptions, err := parseTrackOptions()
 		if err != nil {
-			message := fmt.Sprintf("failed parsing interval: %v", err)
+			message := fmt.Sprintf("failed parsing track options: %v", err)
 			return usageError{message: message}
 		}
 		if err := internal.Track(trackOptions); err != nil {
 			return fmt.Errorf("failed tracking: %v", err)
 		}
 		return nil
-
-	// case "token_file": //TODO: testings en oplossen
-	// 	tF, err := ioutil.ReadFile(args[2])
-	// 	if err != nil {
-	// 		message := fmt.Sprintf("failed reading from the path: %v", err)
-	// 		return usageError{message: message}
-	// 	}
-	// 	tokenFile = string(tF)
-	// 	return nil
 
 	default:
 		return usageError{message: "got invalid command"}

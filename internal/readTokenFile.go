@@ -2,13 +2,10 @@ package internal
 
 import (
 	"errors"
-	"fmt"
 	"os"
 )
 
 func ReadTokenFile(path string) (string, error) {
-
-	fmt.Printf("Path is %s \n", path)
 
 	if path == "" {
 		return "", nil
