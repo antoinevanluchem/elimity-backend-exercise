@@ -13,6 +13,7 @@ import (
 )
 
 var args = os.Args
+var pathFile = ""
 
 // var tokenFile string = ""
 
@@ -23,7 +24,6 @@ func log(message string) {
 }
 
 func main() {
-	fmt.Println("Dit is main")
 	if err := run(); err != nil {
 		message := err.Error()
 		log(message)
@@ -100,6 +100,7 @@ Options:
 		return nil
 
 	case "track":
+		fmt.Println(pathFile)
 		trackOptions, err := parseTrackOptions()
 		if err != nil {
 			message := fmt.Sprintf("failed parsing track options: %v", err)
@@ -109,6 +110,9 @@ Options:
 			return fmt.Errorf("failed tracking: %v", err)
 		}
 		return nil
+
+	case "path_file":
+		pathFile = args[2]
 
 	default:
 		return usageError{message: "got invalid command"}

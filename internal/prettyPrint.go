@@ -113,6 +113,8 @@ func (pPrinter *PrettyPrinter) printRow(row *map[string]string, widths *map[stri
 		content := ""
 		if a, ok := (*row)[h]; ok {
 			content = fmt.Sprintf(format, a)
+		} else {
+			content = fmt.Sprintf(format, a)
 		}
 
 		if i == len(pPrinter.headers)-1 {
