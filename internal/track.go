@@ -27,15 +27,8 @@ func Track(trackOptions *TrackOptions) error {
 
 	for i := 0; ; <-time.Tick(trackOptions.Interval) {
 
-		con := context.Background()
-		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: trackOptions.AccessToken},
-		)
-		tc := oauth2.NewClient(con, ts)
-		client := github.NewClient(tc)
+		client, con := getNewClient(trackOptions.AccessToken)
 
-		// client := github.NewClient(nil)
-		// con := context.Background()
 		listOptions := github.ListOptions{PerPage: 3}
 		searchOptions := &github.SearchOptions{ListOptions: listOptions, Sort: "updated"}
 
@@ -66,4 +59,20 @@ func Track(trackOptions *TrackOptions) error {
 		i++
 
 	}
+}
+
+func getNewClient(accessToken string) (*github.Client, context.Context) {
+
+	if accessToken == "" {
+		return github.NewClient(nil), context.Background()
+
+	}
+
+	con := context.Background()
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: accessToken},
+	)
+	tc := oauth2.NewClient(con, ts)
+	return github.NewClient(tc), con
+
 }
