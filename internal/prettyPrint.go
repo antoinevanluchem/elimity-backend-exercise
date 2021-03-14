@@ -103,8 +103,11 @@ func (pPrinter *PrettyPrinter) printRow(row *map[string]string, widths *map[stri
 	for i, h := range pPrinter.headers {
 
 		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
-		a := (*row)[h]
-		content := fmt.Sprintf(format, a)
+
+		content := ""
+		if a, ok := (*row)[h]; ok {
+			content = fmt.Sprintf(format, a)
+		}
 
 		if i == len(pPrinter.headers)-1 {
 			resultingRow += pPrinter.prefix + content
