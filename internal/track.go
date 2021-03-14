@@ -25,7 +25,9 @@ func Track(trackOptions *TrackOptions) error {
 	headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
 	pPrinter := NewPrettyPrinter(headers, " ", " |")
 
-	for i := 0; ; <-time.Tick(trackOptions.Interval) {
+	i := 0
+
+	for ; ; <-time.Tick(trackOptions.Interval) {
 
 		client, con := getNewClient(trackOptions.AccessToken)
 
@@ -61,18 +63,22 @@ func Track(trackOptions *TrackOptions) error {
 	}
 }
 
+// Helper function to get a new github client and context
+// If a accessToken is given the github client sends authenticated requests, if no accessToken is given the github client sends anonymous requests
 func getNewClient(accessToken string) (*github.Client, context.Context) {
 
+	con := context.Background()
+
 	if accessToken == "" {
-		return github.NewClient(nil), context.Background()
+		return github.NewClient(nil), con
 
 	}
 
-	con := context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: accessToken},
 	)
 	tc := oauth2.NewClient(con, ts)
+
 	return github.NewClient(tc), con
 
 }
