@@ -37,7 +37,7 @@ func makeName() string {
 }
 
 func parseTrackOptions() (*internal.TrackOptions, error) {
-	set := flag.NewFlagSet("", flag.ExitOnError)
+	set := flag.NewFlagSet("", flag.ContinueOnError)
 
 	var interval time.Duration
 	set.DurationVar(&interval, "interval", 10*time.Second, "")
