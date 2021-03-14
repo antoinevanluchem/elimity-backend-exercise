@@ -90,8 +90,8 @@ Commands:
 
 Options:
   -interval=<interval> Repository update interval, greater than zero [default: 10s]
-  -min_stars=<minStars> Filter out repositories with a star count below the given value
-  -token_path=<tokenPath> File path to GitHub personal access token
+  -min_stars=<minStars> Filter out repositories with a star count below the given value [default: 0]
+  -token_path=<tokenPath> File path to GitHub personal access token for authenticated requests [default: "", meaning gothub will use unauthenticated requests]
 `
 		fmt.Fprintf(os.Stdout, usage, name)
 		return nil
