@@ -27,12 +27,13 @@ func NewPrettyPrinter(headers []string, prefix string, suffix string) *PrettyPri
 
 // Add a row to the data of the pretty printer
 func (pPrinter *PrettyPrinter) AddRow(row map[string]string) error {
-	if len(row) == pPrinter.nbCols {
-		pPrinter.data = append(pPrinter.data, row)
-		return nil
+
+	if len(row) != pPrinter.nbCols {
+		return errors.New("got invalid sized row")
 	}
 
-	return errors.New("got invalid sized row")
+	pPrinter.data = append(pPrinter.data, row)
+	return nil
 
 }
 
@@ -50,13 +51,19 @@ func (pPrinter *PrettyPrinter) Print() {
 }
 
 // Print the last N rows of the data
-func (pPrinter *PrettyPrinter) PrintLastNRows(n int) {
+func (pPrinter *PrettyPrinter) PrintLastNRows(n int) error {
 
 	widths := pPrinter.getWidths()
+
+	if len(pPrinter.data) < n {
+		return errors.New("n is larger than the amount of rows")
+	}
 
 	for _, row := range pPrinter.data[len(pPrinter.data)-n:] {
 		pPrinter.printRow(&row, widths)
 	}
+
+	return nil
 }
 
 // Helper function to determine the widths of every column

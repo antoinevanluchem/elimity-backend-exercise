@@ -56,7 +56,10 @@ func Track(trackOptions *TrackOptions) error {
 		if i == 0 {
 			pPrinter.Print()
 		} else {
-			pPrinter.PrintLastNRows(len(result.Repositories))
+			err := pPrinter.PrintLastNRows(len(result.Repositories))
+			if err != nil {
+				return err
+			}
 		}
 
 		i++

@@ -7,6 +7,7 @@ import (
 
 var letters = []byte("abcdefghijklmnopqrstuvwxyz")
 
+// Generate a random string of length n
 func randomString(seed int64, n int) string {
 	rand.Seed(seed)
 
@@ -18,7 +19,26 @@ func randomString(seed int64, n int) string {
 	return string(result)
 }
 
-func TestWidhts_only_headers(t *testing.T) {
+func TestPrettyPrinter_AddRow_too_many_column(t *testing.T) {
+	var seed int64 = 331
+
+	header1 := randomString(seed, 2)
+	header2 := randomString(seed, 3)
+	header3 := randomString(seed, 4)
+
+	headers := []string{header1, header2, header3}
+
+	pPrinter := NewPrettyPrinter(headers, "", "")
+
+	row := map[string]string{header1: "col1", header2: "col2", header3: "col3", "added column": "too much"}
+
+	if err := pPrinter.AddRow(row); err == nil {
+		t.Errorf("Added a row with too many columns, did not throw an error")
+	}
+
+}
+
+func TestPrettyPrinter_getWidths_only_headers(t *testing.T) {
 
 	var seed int64 = 331
 
@@ -36,7 +56,7 @@ func TestWidhts_only_headers(t *testing.T) {
 
 		if got, ok := (*widths)[header]; ok {
 
-			if len(header) != got {
+			if actual := len(header); actual != got {
 				t.Errorf("widths[%s] = %d; want %d", header, got, len(header))
 			}
 
@@ -45,7 +65,7 @@ func TestWidhts_only_headers(t *testing.T) {
 
 }
 
-func TestWidhts_big_table_first_row_has_bigger_entries(t *testing.T) {
+func TestPrettyPrinter_getWidhts_first_row_has_bigger_entries(t *testing.T) {
 
 	var seed int64 = 331
 
@@ -156,4 +176,43 @@ func ExamplePrettyPrinter_Print_wrong_entry_in_row() {
 	// col1|12345|col333
 	// col1|     |col3
 
+}
+
+func ExamplePrettyPrinter_PrintLastNRows() {
+	header1 := "col1"
+	header2 := "col2"
+	header3 := "col3"
+
+	headers := []string{header1, header2, header3}
+	row1 := map[string]string{header1: "col1", header2: "col2", header3: "col3"}
+	row2 := map[string]string{header1: "last", header2: "last", header3: "last"}
+
+	pPrinter := NewPrettyPrinter(headers, "", "|")
+
+	pPrinter.AddRow(row1)
+	pPrinter.AddRow(row2)
+
+	pPrinter.PrintLastNRows(1)
+	// Output:
+	// last|last|last
+
+}
+
+func TestPrettyPrinter_PrintLastNRows_n_larger_than_rows(t *testing.T) {
+	header1 := "col1"
+	header2 := "col2"
+	header3 := "col3"
+
+	headers := []string{header1, header2, header3}
+	row1 := map[string]string{header1: "col1", header2: "col2", header3: "col3"}
+	row2 := map[string]string{header1: "col1", header2: "col2", header3: "col3"}
+
+	pPrinter := NewPrettyPrinter(headers, "", "|")
+
+	pPrinter.AddRow(row1)
+	pPrinter.AddRow(row2)
+
+	if err := pPrinter.PrintLastNRows(3); err == nil {
+		t.Errorf("Added a row with too many columns, did not throw an error")
+	}
 }
