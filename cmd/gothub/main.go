@@ -65,7 +65,7 @@ func parseTrackOptions() (internal.TrackOptions, error) {
 
 	client, err := internal.GetNewClient(tokenPath)
 	if err != nil {
-		return internal.TrackOptions{}, errors.New("something went wrong when reading the file from the path")
+		return internal.TrackOptions{}, err
 	}
 
 	return internal.TrackOptions{Interval: interval, MinStars: minStars, Client: client}, nil

@@ -5,7 +5,6 @@ import (
 )
 
 func getRepoName(repo *github.Repository) string {
-
 	if v := repo.Name; v != nil {
 		return *v
 	}
@@ -14,7 +13,6 @@ func getRepoName(repo *github.Repository) string {
 }
 
 func getUpdatedAt(repo *github.Repository) string {
-
 	var uA github.Timestamp
 
 	if v := repo.UpdatedAt; v != nil {
@@ -23,9 +21,7 @@ func getUpdatedAt(repo *github.Repository) string {
 		uA = github.Timestamp{}
 	}
 
-	updatedAt := uA.Format("2006-01-02T15:04:05")
-
-	return updatedAt
+	return uA.Format("2006-01-02T15:04:05")
 
 }
 
@@ -38,7 +34,6 @@ func getOwner(repo *github.Repository) github.User {
 }
 
 func getStars(repo *github.Repository) int {
-
 	if v := repo.StargazersCount; v != nil {
 		return *v
 	}
@@ -47,7 +42,6 @@ func getStars(repo *github.Repository) int {
 }
 
 func getOwnerName(owner *github.User) string {
-
 	if v := owner.Company; v != nil {
 		return *v
 	} else if v := owner.Name; v != nil {
