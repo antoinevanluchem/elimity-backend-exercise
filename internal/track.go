@@ -17,7 +17,7 @@ import (
 type TrackOptions struct {
 	Interval    time.Duration
 	MinStars    int
-	AccessToken AccessToken
+	AccessToken string
 }
 
 // Track tracks public GitHub repositories, optional parameters must be given via a TrackOptions struct.
@@ -70,17 +70,17 @@ func Track(trackOptions *TrackOptions) error {
 
 // Helper function to get a new github client and context
 // If a accessToken is given the github client sends authenticated requests, if no accessToken is given the github client sends anonymous requests
-func getNewClient(accessToken AccessToken) (*github.Client, context.Context) {
+func getNewClient(accessToken string) (*github.Client, context.Context) {
 
 	con := context.Background()
 
-	if accessToken.Token == "" {
+	if accessToken == "" {
 		return github.NewClient(nil), con
 
 	}
 
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: accessToken.Token},
+		&oauth2.Token{AccessToken: accessToken},
 	)
 	tc := oauth2.NewClient(con, ts)
 
