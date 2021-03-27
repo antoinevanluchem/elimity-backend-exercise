@@ -51,8 +51,6 @@ func Track(trackOptions *TrackOptions) error {
 
 			row := map[string]string{"Owner": ownerName, "Name": repoName, "Updated at (UTC)": updatedAt, "Star count": strconv.Itoa(stars)}
 
-			fmt.Println("TEST")
-
 			pPrinter.AddRow(row)
 		}
 

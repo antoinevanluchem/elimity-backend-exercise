@@ -1,8 +1,6 @@
 package internal
 
 import (
-	"strconv"
-
 	"github.com/google/go-github/v33/github"
 )
 
@@ -25,12 +23,7 @@ func getUpdatedAt(repo *github.Repository) string {
 		uA = github.Timestamp{}
 	}
 
-	year, month, day := uA.Date()
-	date := strconv.Itoa(year) + "-" + month.String() + "-" + strconv.Itoa(day)
-
-	hour, min, sec := uA.Clock()
-	time := strconv.Itoa(hour) + ":" + strconv.Itoa(min) + ":" + strconv.Itoa(sec)
-	updatedAt := date + "T" + time
+	updatedAt := uA.Format("2021-03-08T11:29:52")
 
 	return updatedAt
 
