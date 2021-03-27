@@ -21,7 +21,7 @@ type TrackOptions struct {
 }
 
 // Track tracks public GitHub repositories, optional parameters must be given via a TrackOptions struct.
-func Track(trackOptions *TrackOptions) error {
+func Track(trackOptions TrackOptions) error {
 
 	headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
 	pPrinter := NewPrettyPrinter(headers, " ", " |")

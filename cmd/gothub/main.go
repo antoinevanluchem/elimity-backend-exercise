@@ -36,7 +36,7 @@ func makeName() string {
 	return filepath.Base(path)
 }
 
-func parseTrackOptions() (*internal.TrackOptions, error) {
+func parseTrackOptions() (internal.TrackOptions, error) {
 	set := flag.NewFlagSet("", flag.ContinueOnError)
 
 	var interval time.Duration
@@ -52,23 +52,23 @@ func parseTrackOptions() (*internal.TrackOptions, error) {
 	args := args[2:]
 
 	if err := set.Parse(args); err != nil {
-		return &internal.TrackOptions{}, errors.New("got invalid flags")
+		return internal.TrackOptions{}, errors.New("got invalid flags")
 	}
 
 	if interval <= 0 {
-		return &internal.TrackOptions{}, errors.New("got invalid interval")
+		return internal.TrackOptions{}, errors.New("got invalid interval")
 	}
 
 	if minStars < 0 {
-		return &internal.TrackOptions{}, errors.New("got invalid minimal stars")
+		return internal.TrackOptions{}, errors.New("got invalid minimal stars")
 	}
 
 	client, err := internal.GetNewClient(tokenPath)
 	if err != nil {
-		return &internal.TrackOptions{}, errors.New("something went wrong when reading the file from the path")
+		return internal.TrackOptions{}, errors.New("something went wrong when reading the file from the path")
 	}
 
-	return &internal.TrackOptions{Interval: interval, MinStars: minStars, Client: client}, nil
+	return internal.TrackOptions{Interval: interval, MinStars: minStars, Client: client}, nil
 }
 
 func run() error {
