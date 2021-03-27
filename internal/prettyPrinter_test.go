@@ -32,7 +32,7 @@ func TestPrettyPrinter_AddRow_too_many_column(t *testing.T) {
 
 	row := map[string]string{header1: "col1", header2: "col2", header3: "col3", "added column": "too much"}
 
-	if err := pPrinter.AddRow(row); err == nil {
+	if _, err := pPrinter.AddRow(row); err == nil {
 		t.Errorf("Added a row with too many columns, did not throw an error")
 	}
 
@@ -83,7 +83,7 @@ func TestPrettyPrinter_getWidhts_first_row_has_bigger_entries(t *testing.T) {
 	}
 
 	pPrinter := NewPrettyPrinter(headers, "", "")
-	pPrinter.AddRow(row)
+	pPrinter, _ = pPrinter.AddRow(row)
 
 	widths := pPrinter.getWidths()
 
@@ -133,7 +133,7 @@ func ExamplePrettyPrinter_printRow() {
 	pPrinter := NewPrettyPrinter(headers, "", "|")
 	widths := pPrinter.getWidths()
 
-	pPrinter.AddRow(row)
+	pPrinter, _ = pPrinter.AddRow(row)
 
 	pPrinter.printRow(row, widths)
 	// Output:
@@ -151,7 +151,7 @@ func ExamplePrettyPrinter_Print() {
 
 	pPrinter := NewPrettyPrinter(headers, "", "|")
 
-	pPrinter.AddRow(row)
+	pPrinter, _ = pPrinter.AddRow(row)
 
 	pPrinter.Print()
 	// Output:
@@ -169,7 +169,7 @@ func ExamplePrettyPrinter_Print_wrong_entry_in_row() {
 
 	pPrinter := NewPrettyPrinter(headers, "", "|")
 
-	pPrinter.AddRow(row)
+	pPrinter, _ = pPrinter.AddRow(row)
 
 	pPrinter.Print()
 	// Output:
@@ -189,8 +189,8 @@ func ExamplePrettyPrinter_PrintLastNRows() {
 
 	pPrinter := NewPrettyPrinter(headers, "", "|")
 
-	pPrinter.AddRow(row1)
-	pPrinter.AddRow(row2)
+	pPrinter, _ = pPrinter.AddRow(row1)
+	pPrinter, _ = pPrinter.AddRow(row2)
 
 	pPrinter.PrintLastNRows(1)
 	// Output:
@@ -209,8 +209,8 @@ func TestPrettyPrinter_PrintLastNRows_n_larger_than_rows(t *testing.T) {
 
 	pPrinter := NewPrettyPrinter(headers, "", "|")
 
-	pPrinter.AddRow(row1)
-	pPrinter.AddRow(row2)
+	pPrinter, _ = pPrinter.AddRow(row1)
+	pPrinter, _ = pPrinter.AddRow(row2)
 
 	if err := pPrinter.PrintLastNRows(3); err == nil {
 		t.Errorf("Added a row with too many columns, did not throw an error")

@@ -21,24 +21,24 @@ type PrettyPrinter struct {
 }
 
 // Make a new pretty printer
-func NewPrettyPrinter(headers []string, prefix string, suffix string) *PrettyPrinter {
-	return &PrettyPrinter{headers: headers, nbCols: len(headers), prefix: prefix, suffix: suffix}
+func NewPrettyPrinter(headers []string, prefix string, suffix string) PrettyPrinter {
+	return PrettyPrinter{headers: headers, nbCols: len(headers), prefix: prefix, suffix: suffix}
 }
 
 // Add a row to the data of the pretty printer
-func (pPrinter *PrettyPrinter) AddRow(row map[string]string) error {
+func (pPrinter PrettyPrinter) AddRow(row map[string]string) (PrettyPrinter, error) {
 
 	if len(row) != pPrinter.nbCols {
-		return errors.New("got invalid sized row")
+		return pPrinter, errors.New("got invalid sized row")
 	}
 
 	pPrinter.data = append(pPrinter.data, row)
-	return nil
+	return pPrinter, nil
 
 }
 
 // Print the whole table: headers and data
-func (pPrinter *PrettyPrinter) Print() {
+func (pPrinter PrettyPrinter) Print() {
 
 	widths := pPrinter.getWidths()
 
@@ -51,7 +51,7 @@ func (pPrinter *PrettyPrinter) Print() {
 }
 
 // Print the last N rows of the data
-func (pPrinter *PrettyPrinter) PrintLastNRows(n int) error {
+func (pPrinter PrettyPrinter) PrintLastNRows(n int) error {
 
 	widths := pPrinter.getWidths()
 
@@ -67,7 +67,7 @@ func (pPrinter *PrettyPrinter) PrintLastNRows(n int) error {
 }
 
 // Helper function to determine the widths of every column
-func (pPrinter *PrettyPrinter) getWidths() map[string]int {
+func (pPrinter PrettyPrinter) getWidths() map[string]int {
 	max := map[string]int{}
 
 	currentMax := 0
@@ -89,7 +89,7 @@ func (pPrinter *PrettyPrinter) getWidths() map[string]int {
 }
 
 // Helper function to print the header row
-func (pPrinter *PrettyPrinter) printHeaders(widths map[string]int) {
+func (pPrinter PrettyPrinter) printHeaders(widths map[string]int) {
 	resultingRow := ""
 
 	for i, h := range pPrinter.headers {
@@ -109,7 +109,7 @@ func (pPrinter *PrettyPrinter) printHeaders(widths map[string]int) {
 }
 
 // Helper function to print a row that is not a header row
-func (pPrinter *PrettyPrinter) printRow(row map[string]string, widths map[string]int) {
+func (pPrinter PrettyPrinter) printRow(row map[string]string, widths map[string]int) {
 
 	resultingRow := ""
 
