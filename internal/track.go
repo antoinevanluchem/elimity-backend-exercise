@@ -24,7 +24,7 @@ type TrackOptions struct {
 // Track tracks public GitHub repositories, optional parameters must be given via a TrackOptions struct.
 func Track(trackOptions TrackOptions) error {
 
-	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.AlignRight|tabwriter.Debug)
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.Debug)
 	headers := "Owner\tName\tUpdated at (UTC)\tStar count"
 	fmt.Fprintln(w, headers)
 
