@@ -43,11 +43,11 @@ func Track(trackOptions *TrackOptions) error {
 		}
 
 		for _, repository := range result.Repositories {
-			repoName := *getRepoName(repository)
-			updatedAt := *getUpdatedAt(repository)
-			stars := *getStars(repository)
-			owner := *getOwner(repository)
-			ownerName := *getOwnerName(&owner)
+			repoName := getRepoName(repository)
+			updatedAt := getUpdatedAt(repository)
+			stars := getStars(repository)
+			owner := getOwner(repository)
+			ownerName := getOwnerName(&owner)
 
 			row := map[string]string{"Owner": ownerName, "Name": repoName, "Updated at (UTC)": updatedAt.String(), "Star count": strconv.Itoa(stars)}
 			pPrinter.AddRow(row)

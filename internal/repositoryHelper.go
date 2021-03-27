@@ -1,70 +1,67 @@
 package internal
 
 import (
+	"strconv"
+
 	"github.com/google/go-github/v33/github"
 )
 
-func getRepoName(repo *github.Repository) (repoName *string) {
+func getRepoName(repo *github.Repository) string {
 
 	if v := repo.Name; v != nil {
-		repoName = v
-	} else {
-		rN := ""
-		repoName = &rN
+		return *v
 	}
 
-	return
+	return ""
 }
 
-func getUpdatedAt(repo *github.Repository) (updatedAt *github.Timestamp) {
+func getUpdatedAt(repo *github.Repository) string {
+
+	var uA github.Timestamp
 
 	if v := repo.UpdatedAt; v != nil {
-		updatedAt = v
+		uA = *v
 	} else {
-		uA := github.Timestamp{}
-		updatedAt = &uA
+		uA = github.Timestamp{}
 	}
 
-	return
+	year, month, day := uA.Date()
+	date := strconv.Itoa(year) + "-" + month.String() + "-" + strconv.Itoa(day)
+
+	hour, min, sec := uA.Clock()
+	time := strconv.Itoa(hour) + ":" + strconv.Itoa(min) + ":" + strconv.Itoa(sec)
+	updatedAt := date + "T" + time
+
+	return updatedAt
 
 }
 
-func getOwner(repo *github.Repository) (owner *github.User) {
-
+func getOwner(repo *github.Repository) github.User {
 	if v := repo.Owner; v != nil {
-		owner = v
-	} else {
-		o := github.User{}
-		owner = &o
+		return *v
 	}
 
-	return
+	return github.User{}
 }
 
-func getStars(repo *github.Repository) (stars *int) {
+func getStars(repo *github.Repository) int {
 
 	if v := repo.StargazersCount; v != nil {
-		stars = v
-	} else {
-		s := 0
-		stars = &s
+		return *v
 	}
 
-	return
+	return -1
 }
 
-func getOwnerName(owner *github.User) (ownerName *string) {
+func getOwnerName(owner *github.User) string {
 
 	if v := owner.Company; v != nil {
-		ownerName = v
+		return *v
 	} else if v := owner.Name; v != nil {
-		ownerName = v
+		return *v
 	} else if v := owner.Login; v != nil {
-		ownerName = v
-	} else {
-		oN := ""
-		ownerName = &oN
+		return *v
 	}
 
-	return
+	return ""
 }
