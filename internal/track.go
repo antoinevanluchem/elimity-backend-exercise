@@ -26,11 +26,11 @@ func Track(trackOptions *TrackOptions) error {
 	headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
 	pPrinter := NewPrettyPrinter(headers, " ", " |")
 
+	client, con := getNewClient(trackOptions.AccessToken)
+
 	i := 0
 
 	for ; ; <-time.Tick(trackOptions.Interval) {
-
-		client, con := getNewClient(trackOptions.AccessToken)
 
 		listOptions := github.ListOptions{PerPage: 3}
 		searchOptions := &github.SearchOptions{ListOptions: listOptions, Sort: "updated"}
