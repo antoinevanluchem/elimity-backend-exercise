@@ -15,11 +15,12 @@ type Client struct {
 	Context      context.Context
 }
 
+// Get a new GothubClient
 func GetNewClient(path string) (Client, error) {
 
-	// if path == "" {
-	// 	return getUnauthenticatedClient(), nil
-	// }
+	if path == "" {
+		return getUnauthenticatedClient(), nil
+	}
 
 	accessToken, err := readTokenFile(path)
 	if err != nil {
@@ -46,6 +47,7 @@ func readTokenFile(path string) (string, error) {
 
 }
 
+// Helper function to make an authenticated client
 func getAuthenticatedClient(accessToken string) Client {
 
 	con := context.Background()
@@ -59,6 +61,7 @@ func getAuthenticatedClient(accessToken string) Client {
 
 }
 
+// Helper function to make an unauthenticated client
 func getUnauthenticatedClient() Client {
 	return Client{GithubClient: github.NewClient(nil), Context: context.Background()}
 }
