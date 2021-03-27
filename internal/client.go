@@ -17,9 +17,9 @@ type Client struct {
 
 func GetNewClient(path string) (Client, error) {
 
-	if path == "" {
-		return getUnauthenticatedClient(), nil
-	}
+	// if path == "" {
+	// 	return getUnauthenticatedClient(), nil
+	// }
 
 	accessToken, err := readTokenFile(path)
 	if err != nil {
