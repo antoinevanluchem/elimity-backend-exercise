@@ -63,6 +63,7 @@ func Track(trackOptions TrackOptions) error {
 			// if err != nil {
 			// 	return err
 			// }
+			w.Flush()
 		}
 
 		// if i == 0 {
