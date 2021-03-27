@@ -46,7 +46,7 @@ func (pPrinter *PrettyPrinter) Print() {
 
 	for _, row := range pPrinter.data {
 
-		pPrinter.printRow(&row, widths)
+		pPrinter.printRow(row, widths)
 	}
 }
 
@@ -60,14 +60,14 @@ func (pPrinter *PrettyPrinter) PrintLastNRows(n int) error {
 	}
 
 	for _, row := range pPrinter.data[len(pPrinter.data)-n:] {
-		pPrinter.printRow(&row, widths)
+		pPrinter.printRow(row, widths)
 	}
 
 	return nil
 }
 
 // Helper function to determine the widths of every column
-func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
+func (pPrinter *PrettyPrinter) getWidths() map[string]int {
 	max := map[string]int{}
 
 	currentMax := 0
@@ -85,16 +85,16 @@ func (pPrinter *PrettyPrinter) getWidths() *map[string]int {
 		}
 		max[column] = currentMax
 	}
-	return &max
+	return max
 }
 
 // Helper function to print the header row
-func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
+func (pPrinter *PrettyPrinter) printHeaders(widths map[string]int) {
 	resultingRow := ""
 
 	for i, h := range pPrinter.headers {
 
-		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
+		format := "%-" + strconv.Itoa(widths[h]) + "s"
 		content := fmt.Sprintf(format, h)
 
 		if i == len(pPrinter.headers)-1 {
@@ -109,16 +109,16 @@ func (pPrinter *PrettyPrinter) printHeaders(widths *map[string]int) {
 }
 
 // Helper function to print a row that is not a header row
-func (pPrinter *PrettyPrinter) printRow(row *map[string]string, widths *map[string]int) {
+func (pPrinter *PrettyPrinter) printRow(row map[string]string, widths map[string]int) {
 
 	resultingRow := ""
 
 	for i, h := range pPrinter.headers {
 
-		format := "%-" + strconv.Itoa((*widths)[h]) + "s"
+		format := "%-" + strconv.Itoa(widths[h]) + "s"
 
 		content := ""
-		if a, ok := (*row)[h]; ok {
+		if a, ok := row[h]; ok {
 			content = fmt.Sprintf(format, a)
 		} else {
 			content = fmt.Sprintf(format, a)

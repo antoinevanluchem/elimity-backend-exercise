@@ -54,7 +54,7 @@ func TestPrettyPrinter_getWidths_only_headers(t *testing.T) {
 
 	for _, header := range headers {
 
-		if got, ok := (*widths)[header]; ok {
+		if got, ok := widths[header]; ok {
 
 			if actual := len(header); actual != got {
 				t.Errorf("widths[%s] = %d; want %d", header, got, len(header))
@@ -89,7 +89,7 @@ func TestPrettyPrinter_getWidhts_first_row_has_bigger_entries(t *testing.T) {
 
 	for _, header := range headers {
 
-		if got, ok := (*widths)[header]; ok {
+		if got, ok := widths[header]; ok {
 
 			if r, ok := row[header]; ok {
 
@@ -135,7 +135,7 @@ func ExamplePrettyPrinter_printRow() {
 
 	pPrinter.AddRow(row)
 
-	pPrinter.printRow(&row, widths)
+	pPrinter.printRow(row, widths)
 	// Output:
 	// col1 |col2  |col3
 }
