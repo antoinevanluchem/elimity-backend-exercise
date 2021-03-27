@@ -9,6 +9,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
+// Struct to define a Gothub client
 type Client struct {
 	GithubClient *github.Client
 	Context      context.Context
@@ -16,27 +17,20 @@ type Client struct {
 
 func GetNewClient(path string) (Client, error) {
 
-	con := context.Background()
-
 	if path == "" {
-		return Client{GithubClient: github.NewClient(nil), Context: con}, nil
+		return getUnauthenticatedClient(), nil
 	}
 
 	accessToken, err := readTokenFile(path)
 	if err != nil {
-		return Client{GithubClient: github.NewClient(nil), Context: con}, err
+		return Client{}, err
 	}
 
 	if accessToken == "" {
-		return Client{GithubClient: github.NewClient(nil), Context: con}, nil
-
+		return getUnauthenticatedClient(), nil
 	}
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: accessToken},
-	)
-	tc := oauth2.NewClient(con, ts)
 
-	return Client{GithubClient: github.NewClient(tc), Context: con}, nil
+	return getAuthenticatedClient(accessToken), nil
 
 }
 
@@ -50,4 +44,21 @@ func readTokenFile(path string) (string, error) {
 
 	return string(accessToken), nil
 
+}
+
+func getAuthenticatedClient(accessToken string) Client {
+
+	con := context.Background()
+
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: accessToken},
+	)
+	tc := oauth2.NewClient(con, ts)
+
+	return Client{GithubClient: github.NewClient(tc), Context: con}
+
+}
+
+func getUnauthenticatedClient() Client {
+	return Client{GithubClient: github.NewClient(nil), Context: context.Background()}
 }

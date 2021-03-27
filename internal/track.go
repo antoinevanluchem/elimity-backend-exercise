@@ -12,6 +12,7 @@ import (
 // Interval = repository update interval
 // MinStars = minimal star count of repositories
 // AccesToken = acces token for authenticated requests
+// Client = struct of type Client that contains the github client and context
 type TrackOptions struct {
 	Interval    time.Duration
 	MinStars    int
