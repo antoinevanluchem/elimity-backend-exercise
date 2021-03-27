@@ -23,7 +23,7 @@ func getUpdatedAt(repo *github.Repository) string {
 		uA = github.Timestamp{}
 	}
 
-	updatedAt := uA.Format("2021-03-08T11:29:52")
+	updatedAt := uA.Format("2006-01-02T15:04:05")
 
 	return updatedAt
 
