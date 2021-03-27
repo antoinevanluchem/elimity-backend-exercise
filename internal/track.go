@@ -1,13 +1,11 @@
 package internal
 
 import (
-	"context"
 	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/google/go-github/v33/github"
-	"golang.org/x/oauth2"
 )
 
 // TrackOptions specifies the optional parameters to the Track function.
@@ -18,6 +16,7 @@ type TrackOptions struct {
 	Interval    time.Duration
 	MinStars    int
 	AccessToken string
+	Client      Client
 }
 
 // Track tracks public GitHub repositories, optional parameters must be given via a TrackOptions struct.
@@ -26,7 +25,8 @@ func Track(trackOptions *TrackOptions) error {
 	headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
 	pPrinter := NewPrettyPrinter(headers, " ", " |")
 
-	client, con := getNewClient(trackOptions.AccessToken)
+	client := trackOptions.Client.GithubClient
+	con := trackOptions.Client.Context
 
 	i := 0
 
@@ -66,24 +66,4 @@ func Track(trackOptions *TrackOptions) error {
 		i++
 
 	}
-}
-
-// Helper function to get a new github client and context
-// If a accessToken is given the github client sends authenticated requests, if no accessToken is given the github client sends anonymous requests
-func getNewClient(accessToken string) (*github.Client, context.Context) {
-
-	con := context.Background()
-
-	if accessToken == "" {
-		return github.NewClient(nil), con
-
-	}
-
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: accessToken},
-	)
-	tc := oauth2.NewClient(con, ts)
-
-	return github.NewClient(tc), con
-
 }
