@@ -2,7 +2,8 @@ package internal
 
 import (
 	"fmt"
-	"strconv"
+	"os"
+	"text/tabwriter"
 	"time"
 
 	"github.com/google/go-github/v33/github"
@@ -23,13 +24,17 @@ type TrackOptions struct {
 // Track tracks public GitHub repositories, optional parameters must be given via a TrackOptions struct.
 func Track(trackOptions TrackOptions) error {
 
-	headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
-	pPrinter := NewPrettyPrinter(headers, " ", " |")
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.AlignRight|tabwriter.Debug)
+	headers := "Owner\tName\tUpdated at (UTC)\tStar count"
+	fmt.Fprintln(w, headers)
+
+	// headers := []string{"Owner", "Name", "Updated at (UTC)", "Star count"}
+	// pPrinter := NewPrettyPrinter(headers, " ", " |")
 
 	client := trackOptions.Client.GithubClient
 	con := trackOptions.Client.Context
 
-	i := 0
+	// i := 0
 
 	for ; ; <-time.Tick(trackOptions.Interval) {
 
@@ -50,24 +55,26 @@ func Track(trackOptions TrackOptions) error {
 			owner := getOwner(repository)
 			ownerName := getOwnerName(&owner)
 
-			row := map[string]string{"Owner": ownerName, "Name": repoName, "Updated at (UTC)": updatedAt, "Star count": strconv.Itoa(stars)}
+			row := fmt.Sprintf("%s\t"+"%s\t"+"%s\t"+"%d", ownerName, repoName, updatedAt, stars)
+			fmt.Fprintln(w, row)
+			// row := map[string]string{"Owner": ownerName, "Name": repoName, "Updated at (UTC)": updatedAt, "Star count": strconv.Itoa(stars)}
 
-			pPrinter, err = pPrinter.AddRow(row)
-			if err != nil {
-				return err
-			}
+			// pPrinter, err = pPrinter.AddRow(row)
+			// if err != nil {
+			// 	return err
+			// }
 		}
 
-		if i == 0 {
-			pPrinter.Print()
-		} else {
-			err := pPrinter.PrintLastNRows(len(result.Repositories))
-			if err != nil {
-				return err
-			}
-		}
+		// if i == 0 {
+		// 	pPrinter.Print()
+		// } else {
+		// 	err := pPrinter.PrintLastNRows(len(result.Repositories))
+		// 	if err != nil {
+		// 		return err
+		// 	}
+		// }
 
-		i++
+		// i++
 
 	}
 }
