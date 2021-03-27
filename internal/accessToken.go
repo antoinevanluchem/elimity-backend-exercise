@@ -9,9 +9,9 @@ import (
 // If no path is provided (empty string), an empty access token is returned
 func ReadTokenFile(path string) (string, error) {
 
-	// if path == "" {
-	// 	return AccessToken{}, nil
-	// }
+	if path == "" {
+		return "", nil
+	}
 
 	accessToken, err := os.ReadFile(path)
 	if err != nil {
